@@ -1,0 +1,7 @@
+Requirement already satisfied: python-jose in d:\coffee_shop\backend\coffee-env\lib\site-packages (3.2.0)
+Requirement already satisfied: rsa in d:\coffee_shop\backend\coffee-env\lib\site-packages (from python-jose) (4.7.2)
+Requirement already satisfied: pyasn1 in d:\coffee_shop\backend\coffee-env\lib\site-packages (from python-jose) (0.4.8)
+Requirement already satisfied: six<2.0 in d:\coffee_shop\backend\coffee-env\lib\site-packages (from python-jose) (1.15.0)
+Requirement already satisfied: ecdsa<0.15 in d:\coffee_shop\backend\coffee-env\lib\site-packages (from python-jose) (0.14.1)
+Requirement already satisfied: six<2.0 in d:\coffee_shop\backend\coffee-env\lib\site-packages (from python-jose) (1.15.0)
+Requirement already satisfied: pyasn1 in d:\coffee_shop\backend\coffee-env\lib\site-packages (from python-jose) (0.4.8)
