@@ -18,12 +18,17 @@ CORS(app)
 ## ROUTES
 @app.route('/drinks', methods=['GET'])
 def getDrinks():
-   drinks = Drink.query.all()
-   shortedDrinks = [drink.short() for drink in drinks]
-   return jsonify({
-    "success": True,
-    "drinks": shortedDrinks
-    })
+    try:
+        drinks = Drink.query.all()
+        shortedDrinks = [drink.short() for drink in drinks]
+        return jsonify({
+            "success": True,
+            "drinks": shortedDrinks
+            })
+    except BaseException:
+        print(sys.exc_info())
+        abort(500)
+
 
 
 
@@ -39,10 +44,10 @@ def getDrinksDetail(payload):
 
 @app.route('/drinks', methods=["POST"])
 @requires_auth('post:drinks')
-def addNewDrink():
+def addNewDrink(payload):
    getDrink = request.get_json()
-   if ('title' not in getDrink) or ('recipe' not in getDrink):
-        abort(400)
+#    if ('title' not in getDrink) or ('recipe' not in getDrink):
+#         abort(400)
    try:
        addNewDrink = Drink(title = getDrink['title'], recipe = json.dumps(getDrink['recipe']))
        addNewDrink.insert()
@@ -53,6 +58,18 @@ def addNewDrink():
    except BaseException:
         print(sys.exc_info())
         abort(500)
+    # try:
+    #     drink_get_json = request.get_json()
+    #     drink = Drink(title = drink_get_json['title'],
+    #                   recipe=json.dumps(drink_get_json['recipe']))
+    #     drink.insert()
+    #     return jsonify({
+    #         "success": True,
+    #         "drinks": drink.long()
+    #     })
+    # except BaseException:
+    #     print(sys.exc_info())
+    #     abort(422)
 
 
 @app.route("/drinks/<int:drink_id>",methods=["PATCH"])
