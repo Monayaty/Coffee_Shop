@@ -18,16 +18,14 @@ CORS(app)
 ## ROUTES
 @app.route('/drinks', methods=['GET'])
 def getDrinks():
-    try:
-        drinks = Drink.query.all()
-        shortedDrinks = [drink.short() for drink in drinks]
-        return jsonify({
-            "success": True,
-            "drinks": shortedDrinks
-            })
-    except BaseException:
-        print(sys.exc_info())
-        abort(500)
+    
+    drinks = Drink.query.all()
+    shortedDrinks = [drink.short() for drink in drinks]
+    return jsonify({
+        "success": True,
+        "drinks": shortedDrinks
+        })
+    
 
 
 
@@ -58,57 +56,48 @@ def addNewDrink(payload):
    except BaseException:
         print(sys.exc_info())
         abort(500)
-    # try:
-    #     drink_get_json = request.get_json()
-    #     drink = Drink(title = drink_get_json['title'],
-    #                   recipe=json.dumps(drink_get_json['recipe']))
-    #     drink.insert()
-    #     return jsonify({
-    #         "success": True,
-    #         "drinks": drink.long()
-    #     })
-    # except BaseException:
-    #     print(sys.exc_info())
-    #     abort(422)
+   
 
 
-@app.route("/drinks/<int:drink_id>",methods=["PATCH"])
-@requires_auth('patch:drinks')
+
+@app.route("/drinks/<int:drink_id>", methods=['PATCH'])
+@requires_auth("patch:drinks")
 def updateDrink(payload, drink_id):
-    drink = Drink.query.filter_by(id = drink_id).one_or_none()
-    if drink is None:
-        abort(404)
-    getDrink = request.get_json()
-    if ('title' not in getDrink) or ('recipe' not in getDrink):
-        abort(400)
     try:
-       drink.title = getDrink['title']
-       drink.recipe = json.dumps(getDrink['recipe'])
-       drink.update()
-       updatedDrink = Drink.query.get(drink_id)
-       return jsonify({
-           "success": True,
-           "drinks": [updatedDrink.long()] 
+        drink = Drink.query.get(drink_id)
+
+        getDrink = request.get_json()
+        if 'title' in getDrink: 
+            drink.title = getDrink['title']
+        if 'recipe' in getDrink:  
+            drink.recipe = json.dumps(getDrink['recipe'])
+
+        drink.update()
+
+        return jsonify({
+            "success": True,
+            "drinks": [drink.long()]
         })
     except BaseException:
         print(sys.exc_info())
-        abort(422)
+        abort(404)
+
 
 @app.route('/drinks/<int:drink_id>', methods=["DELETE"])
 @requires_auth('delete:drinks')
 def deleteDrink(payload, drink_id):
-    selectedDrink = Drink.query.filter_by(id = drink_id).one_or_none()
-    if selectedDrink is None:
-        abort(404)
     try:
+        selectedDrink = Drink.query.filter_by(id = drink_id).one_or_none()
+
         selectedDrink.delete()
         return jsonify({
             "success": True,
             "delete": drink_id
         })
+
     except BaseException:
         print(sys.exc_info())
-        abort(500)
+        abort(404)
 
 
 

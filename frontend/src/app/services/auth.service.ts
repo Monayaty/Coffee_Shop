@@ -72,6 +72,9 @@ export class AuthService {
     this.token = '';
     this.payload = null;
     this.set_jwt();
+    window.history.replaceState(null, null, '');
+    window.location.href="https://window.history.replaceState(null, null, '')";
+    window.location.href="https://dev-f9qcb8ql.au.auth0.com/v2/logout?returnTo=http://localhost:8100/tabs/user-page&client_id=5XqFySBRYgefHE29cRLcdclRVHixDdsf";
   }
 
   can(permission: string) {
